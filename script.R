@@ -44,14 +44,15 @@ rm(Importance)
 #Teste T
 t.test(Importance ~ Politics, data)
 
-#Gráfico
+#Sumário de média e mediana
 r <- data %>%
   group_by(Politics) %>%
   summarise(
-    mean = mean(Importance, na.rm = TRUE),
+    mean   = mean(Importance, na.rm   = TRUE),
     median = median(Importance, na.rm = TRUE)
     )
 
+#Gerando gráfico
 ggplot(data, aes(Politics, Importance)) +
   geom_boxplot() +
   
@@ -61,7 +62,10 @@ ggplot(data, aes(Politics, Importance)) +
   geom_point(data = r, aes(x = Politics, y = median), size = 3) +
   
   labs(
-    x = "Consumo de conteúdo político",
-    y = "Índice de importância da disciplina de Sociologia"
+    x       = "Consumo de conteúdo político",
+    y       = "Índice de importância da disciplina de Sociologia",
+    caption = paste("p-value:", round(t.test(Importance ~ Politics, data)$p.value, digits = 4))
   ) +
   theme_minimal()
+
+  
